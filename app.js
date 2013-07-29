@@ -48,8 +48,8 @@ app.all('/purchased', function(req, res) {
 		query.name.$options = 'i';
 	}
 	
-	MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
-	//MongoClient.connect(MONGOHQ_URL, function(err, db) {
+	//MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
+	MongoClient.connect(MONGOHQ_URL, function(err, db) {
 		if(err) throw err;
 
 	    var ordersc = db.collection('orders');
@@ -74,8 +74,8 @@ app.post('/createorder', function(req, res) {
 	var	remarks = req.param('remarks');
 	var paid = req.param('paid');
 
-	MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
-	//MongoClient.connect(MONGOHQ_URL, function(err, db) {
+	//MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
+	MongoClient.connect(MONGOHQ_URL, function(err, db) {
 		if(err) throw err;
 
 	    var ordersc = db.collection('orders');
