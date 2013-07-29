@@ -1,5 +1,6 @@
 var express = require('express'), 
 	http = require('http'),
+	connect = require('connect'),
 	MongoClient = require('mongodb').MongoClient;
 
 //var MONGOHQ_URL="mongodb://user:pass@server.mongohq.com:port_name/db_name"
@@ -9,10 +10,12 @@ var app = express();
 
 var id = 0;
 
+var port = process.env.PORT || 3000;
+
 // all environments
 // can configure using middleware 
 app.configure(function(){
-	//app.set('port', process.env.PORT || 3000);
+	app.set('port', process.env.PORT || 3000);
 	//set where to get paths from: __dirname is the current directory
 	app.use(express.bodyParser());
 	app.set('views', __dirname + '/views/');
@@ -44,9 +47,9 @@ app.all('/purchased', function(req, res) {
 		query.name = {$regex: search};
 		query.name.$options = 'i';
 	}
-
-	//MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
-	MongoClient.connect(MONGOHQ_URL, function(err, db) {
+	
+	MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
+	//MongoClient.connect(MONGOHQ_URL, function(err, db) {
 		if(err) throw err;
 
 	    var ordersc = db.collection('orders');
@@ -71,8 +74,8 @@ app.post('/createorder', function(req, res) {
 	var	remarks = req.param('remarks');
 	var paid = req.param('paid');
 
-	//MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
-	MongoClient.connect(MONGOHQ_URL, function(err, db) {
+	MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
+	//MongoClient.connect(MONGOHQ_URL, function(err, db) {
 		if(err) throw err;
 
 	    var ordersc = db.collection('orders');
@@ -84,6 +87,6 @@ app.post('/createorder', function(req, res) {
   	});
 });
 
-app.listen(3000);
+app.listen(port);
 console.log('Express server listening on port 3000');
 
