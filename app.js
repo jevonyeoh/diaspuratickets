@@ -3,7 +3,7 @@ var express = require('express'),
 	MongoClient = require('mongodb').MongoClient;
 
 //var MONGOHQ_URL="mongodb://user:pass@server.mongohq.com:port_name/db_name"
-var MONGOHQ_URL="mongodb://jevon:a62c637ffca71b9b7587214b45a9714b@dharma.mongohq.com:10038/app17077512";
+var MONGOHQ_URL="mongodb://jevon:clubsg@dharma.mongohq.com:10038/app17077512";
 
 var app = express();
 
@@ -33,8 +33,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/new', function(req, res) {
-	//res.render("new_order");
-	return res.render('home');
+	res.render("new_order");
 });
 
 app.all('/purchased', function(req, res) {
@@ -46,9 +45,6 @@ app.all('/purchased', function(req, res) {
 		query.name.$options = 'i';
 	}
 
-	return res.render('home');
-
-	/*
 	//MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
 	MongoClient.connect(MONGOHQ_URL, function(err, db) {
 		if(err) throw err;
@@ -60,7 +56,6 @@ app.all('/purchased', function(req, res) {
 	    	});
 	    });	
   	});
-*/
 });
 
 app.post('/edit', function(req, res) {
@@ -69,15 +64,13 @@ app.post('/edit', function(req, res) {
 
 app.post('/createorder', function(req, res) {
 	return res.render('home');
-	
+
 	var name = req.param('username');
 	var	numtickets = req.param('numtickets');
 	var	price = req.param('price');
 	var	remarks = req.param('remarks');
 	var paid = req.param('paid');
 
-
-/*
 	//MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
 	MongoClient.connect(MONGOHQ_URL, function(err, db) {
 		if(err) throw err;
@@ -89,7 +82,6 @@ app.post('/createorder', function(req, res) {
 	    	return res.redirect('/purchased');
 	    });
   	});
-*/
 });
 
 app.listen(3000);
