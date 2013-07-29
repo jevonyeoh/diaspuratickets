@@ -10,26 +10,18 @@ html(lang="en")
 		link(rel="shortcut icon", href="../assets/ico/favicon.png")
 
 		style.
-			input {
-				left: 0;
-				margin-left: 100px;
-				position: absolute;
-			}
+
 			textarea {
 				width: 600px;
 				height: 150px;
 				padding: 5px;
 			}
-			form {
-				margin-bottom: 10px;
-				width: 400px;
-			}
 			td {
 				padding: 3px;
 				width: 75px;
 			}
-			input, label {
-				float: left;
+			form {
+				margin: 0px
 			}
 			thead {
 				font-weight: bold;
@@ -114,27 +106,47 @@ html(lang="en")
 							li: a(href="/new") New Orders
 							li.active: a(href="#") Purchased
 
-		hr
-
-
-		//div.row-fluid
-		//	div.span12				
+		h3 Search
+		div.row-fluid
+			div.span12
+				form(action="/purchased", method="post")
+					p
+						label Name
+						input(type="text", name="searchword", id="searchword")
+					input(type="submit", value="Search")
+		
+		hr		
 
 		h3 Tickets Purchased
 		table(border="1")
 			thead
 				td(style="width:100px") Name
+				td Edit
 				td Quantity
 				td Price
 				td(style="width:150px") Remarks
 				td Paid
+				td Delete
+
 			- for (var order in docs) 
 				tr
 					td= docs[order].name
+					td
+						form(action="/edit", method="post")
+							input(type="hidden", name="name", value="#{docs[order].name")
+							input(type="hidden", name="numtickets", value="#{docs[order].numtickets")
+							input(type="hidden", name="price", value="#{docs[order].price")
+							input(type="hidden", name="remarks", value="#{docs[order].remarks")
+							input(type="submit", value="Edit", id="#{docs[order].id}")
 					td= docs[order].numtickets
 					td= docs[order].price
 					td= docs[order].remarks
-					td= docs[order].paid
+					- if (!docs[order].paid)
+						td No
+					- else
+						td
+					td
+						input(type="submit", value="Delete", id="#{docs[order].id}")
 
 		hr
 

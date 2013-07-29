@@ -2,7 +2,12 @@ var express = require('express'),
 	http = require('http'),
 	MongoClient = require('mongodb').MongoClient;
 
+//var MONGOHQ_URL="mongodb://user:pass@server.mongohq.com:port_name/db_name"
+var MONGOHQ_URL="mongodb://jevony@seas.upenn.edu:codestone1@dharma.mongohq.com:10038/app17077512";
+
 var app = express();
+
+var id = 0;
 
 // all environments
 // can configure using middleware 
@@ -27,12 +32,25 @@ app.get('/', function(req, res) {
 	return res.render("home");
 });
 
-app.get('/purchased', function(req, res) {
-	MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
+app.get('/new', function(req, res) {
+	res.render("new_order");
+});
+
+app.all('/purchased', function(req, res) {
+	var search = req.param('searchword') || 0;
+	var query = {};
+
+	if (search) {
+		query.name = {$regex: search};
+		query.name.$options = 'i';
+	}
+
+	//MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
+	MongoClient.connect(MONGOHQ_URL, function(err, db) {
 		if(err) throw err;
 
 	    var ordersc = db.collection('orders');
-	    ordersc.find().toArray(function(err, docs) {
+	    ordersc.find(query).toArray(function(err, docs) {
 	    	return res.render("purchased", {
 	    		docs: docs
 	    	});
@@ -40,8 +58,8 @@ app.get('/purchased', function(req, res) {
   	});
 });
 
-app.get('/new', function(req, res) {
-	res.render("new_order");
+app.post('/edit', function(req, res) {
+	return res.render('edit');
 });
 
 app.post('/createorder', function(req, res) {
@@ -51,13 +69,19 @@ app.post('/createorder', function(req, res) {
 	var	remarks = req.param('remarks');
 	var paid = req.param('paid');
 
-	MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
+	//MongoClient.connect('mongodb://127.0.0.1:27017/tickets', function(err, db) {
+	MongoClient.connect(MONGOHQ_URL, function(err, db) {
 		if(err) throw err;
 
 	    var ordersc = db.collection('orders');
-	    ordersc.insert({name: name, numtickets: numtickets, price: price, remarks: remarks, paid:paid}, function(err, docs) {
+	    ordersc.insert({name: name, numtickets: numtickets, price: price, remarks: remarks, paid:paid, id:id}, function(err, docs) {
 	    	db.close();
-	    	return res.redirect('/');
+	    	id++;
+	    	return res.redirect('/purchased');
 	    });
   	});
 });
+
+app.listen(3000);
+console.log('Express server listening on port 3000');
+

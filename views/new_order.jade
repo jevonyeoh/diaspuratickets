@@ -85,8 +85,6 @@ html(lang="en")
 							li.active: a(href="#") New Orders
 							li: a(href="/purchased") Purchased
 
-		hr
-
 		div.row-fluid
 			div.span12
 				form(action="/createorder", method="post")
@@ -99,12 +97,23 @@ html(lang="en")
 					p 
 						label Cost per ticket
 						input(type="text", name="price", id="price")
+					p
+						label
+							b Event
+							br
+							| Dialogue 
+							input(type="checkbox", name="dd")
+							|  Singcity 
+							input(type="checkbox", name="sc")
+							|  Package 
+							input(type="checkbox", name="package")
 					p 
 						label Remarks
 						textarea(name="remarks", id="remarks")
 					p 
-						label Paid
-						input(type="checkbox", name="paid", id="paid")
+						label 
+							| Paid 
+							input(type="checkbox", name="paid", id="paid")
 					input(type="submit", value="Submit")
 
 		hr
