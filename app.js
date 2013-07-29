@@ -3,7 +3,7 @@ var express = require('express'),
 	MongoClient = require('mongodb').MongoClient;
 
 //var MONGOHQ_URL="mongodb://user:pass@server.mongohq.com:port_name/db_name"
-var MONGOHQ_URL="mongodb://jevony@seas.upenn.edu:codestone1@dharma.mongohq.com:10038/app17077512";
+var MONGOHQ_URL="mongodb://heroku:7292f101aa645fa1f72a5bf3510eeaa6@dharma.mongohq.com:10038/app17077512";
 
 var app = express();
 
